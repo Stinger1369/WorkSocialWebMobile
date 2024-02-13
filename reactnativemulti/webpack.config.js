@@ -1,11 +1,18 @@
-// webpack.config.js
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin'); // Assurez-vous d'avoir installé ce plugin
 const webpack = require('webpack');
 
 module.exports = {
   // Point d'entrée de votre application
   entry: path.join(__dirname, 'index.web.js'),
+
+  // Configuration de sortie
+  output: {
+    path: path.resolve(__dirname, 'build'), // Dossier de sortie pour les fichiers construits
+    filename: 'bundle.js', // Nom du fichier JavaScript principal
+    publicPath: '/', // Chemin de base pour tous les assets
+  },
 
   // Règles pour le traitement des fichiers
   module: {
@@ -56,27 +63,33 @@ module.exports = {
 
   // Plugins utilisés
   plugins: [
-  new HtmlWebpackPlugin({
-    template: path.join(__dirname, 'public/index.html'),
-  }),
-  new webpack.NormalModuleReplacementPlugin(
-    /@react-native-community\/datetimepicker/,
-    path.resolve(__dirname, './empty-module.js')
-  ),
-  new webpack.NormalModuleReplacementPlugin(
-    /react-native-image-picker/,
-    path.resolve(__dirname, './empty-module.js')
-  ),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'public/index.html'),
+    }),
+    new webpack.NormalModuleReplacementPlugin(
+      /@react-native-community\/datetimepicker/,
+      path.resolve(__dirname, './empty-module.js'),
+    ),
+    new webpack.NormalModuleReplacementPlugin(
+      /react-native-image-picker/,
+      path.resolve(__dirname, './empty-module.js'),
+    ),
+    // Copie le fichier _redirects dans le dossier de build
+    new CopyPlugin({
+      patterns: [
+        {from: 'public/_redirects', to: 'build/'}, // Assurez-vous que le chemin est correct
+      ],
+    }),
   ],
 
   // Configuration du serveur de développement
- devServer: {
-  static: {
-    directory: path.join(__dirname, 'public'),
-    publicPath: '/',
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'public'),
+      publicPath: '/',
+    },
+    compress: true,
+    port: 8080,
+    historyApiFallback: true,
   },
-  compress: true,
-  port: 8080,
-  historyApiFallback: true,
-},
 };
