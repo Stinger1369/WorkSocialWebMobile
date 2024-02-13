@@ -5,7 +5,7 @@ const settings = {
   devRunMode: 100,
   withConsole: true,
 };
-const hostname = `https://worksocial.onrender.com`;
+const hostname = `https://worksocial-zstb.onrender.com`;
 
 // function localImageServerUrl() {
 //   // URL pour votre serveur d'images local
