@@ -77,7 +77,7 @@ module.exports = {
     // Copie le fichier _redirects dans le dossier de build
     new CopyPlugin({
       patterns: [
-        {from: 'public/_redirects', to: 'build/'}, // Assurez-vous que le chemin est correct
+        {from: 'public/_redirects', to: './'},
       ],
     }),
   ],
